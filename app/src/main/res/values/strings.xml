@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">ElWhats</string>
+    <string name="create_new_account">Create A New Account</string>
+    <string name="username">Username</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="register">Register</string>
+    <string name="welcome_to_elwhatsapp">Welcome To ElWhatsApp</string>
+    <string name="create_a_new_account">Create A New Account</string>
+    <string name="already_have_an_account">Already Have An Account</string>
+    <string name="login_to_elwhatsapp">Login To ElWhatsApp</string>
+    <string name="login">Login</string>
 </resources>

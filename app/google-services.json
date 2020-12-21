@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "734015708812",
+    "project_id": "elwhats-ff7d8",
+    "storage_bucket": "elwhats-ff7d8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:734015708812:android:cce4c643489a86b3c225a9",
+        "android_client_info": {
+          "package_name": "com.shorbgy.elwhats"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "734015708812-n6nqtum3191kpsnca1d3etnfdbg3kqj4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJQO3Vm-2-PNZwkkZt9cN_tXqTIrzAVZs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "734015708812-n6nqtum3191kpsnca1d3etnfdbg3kqj4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
