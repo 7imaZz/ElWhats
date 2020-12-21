@@ -1,4 +1,4 @@
-package com.shorbgy.elwhats;
+package com.shorbgy.elwhats.ui.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.rengwuxian.materialedittext.MaterialEditText;
+import com.shorbgy.elwhats.R;
+
 import java.util.Objects;
 import butterknife.BindView;
 import butterknife.ButterKnife;

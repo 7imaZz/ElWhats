@@ -9,13 +9,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ElWhats">
-        <activity android:name=".LoginActivity"
-            android:parentActivityName=".StartActivity"/>
-        <activity android:name=".MainActivity" />
+        <activity android:name=".ui.activities.LoginActivity"
+            android:parentActivityName=".ui.activities.StartActivity"/>
+        <activity android:name=".ui.activities.MainActivity" />
         <activity
-            android:name=".RegisterActivity"
-            android:parentActivityName=".StartActivity" />
-        <activity android:name=".StartActivity">
+            android:name=".ui.activities.RegisterActivity"
+            android:parentActivityName=".ui.activities.StartActivity" />
+        <activity android:name=".ui.activities.StartActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

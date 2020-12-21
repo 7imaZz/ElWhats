@@ -1,4 +1,4 @@
-package com.shorbgy.elwhats;
+package com.shorbgy.elwhats.ui.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -13,6 +13,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.rengwuxian.materialedittext.MaterialEditText;
+import com.shorbgy.elwhats.R;
+
 import java.util.HashMap;
 import java.util.Objects;
 import butterknife.BindView;
