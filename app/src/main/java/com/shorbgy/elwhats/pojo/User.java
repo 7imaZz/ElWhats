@@ -8,22 +8,25 @@ public class User implements Parcelable{
     private String id;
     private String imageUrl;
     private String username;
+    private String status;
     private long date;
 
     public User() {
     }
 
-    public User(String id, String imageUrl, String username, long date) {
+    public User(String id, String imageUrl, String username, String status,long date) {
         this.id = id;
         this.imageUrl = imageUrl;
         this.username = username;
         this.date = date;
+        this.status = status;
     }
 
     protected User(Parcel in) {
         id = in.readString();
         imageUrl = in.readString();
         username = in.readString();
+        status = in.readString();
         date = in.readLong();
     }
 
@@ -71,6 +74,14 @@ public class User implements Parcelable{
         this.date = date;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -81,6 +92,7 @@ public class User implements Parcelable{
         dest.writeString(id);
         dest.writeString(imageUrl);
         dest.writeString(username);
+        dest.writeString(status);
         dest.writeLong(date);
     }
 }

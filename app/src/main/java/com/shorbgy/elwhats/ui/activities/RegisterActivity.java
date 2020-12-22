@@ -85,6 +85,7 @@ public class RegisterActivity extends AppCompatActivity {
                 userMap.put("id", userId);
                 userMap.put("username", username);
                 userMap.put("imageUrl", "Default");
+                userMap.put("status", "offline");
                 userMap.put("date", 0);
 
                 database.setValue(userMap).addOnCompleteListener(task1 -> {

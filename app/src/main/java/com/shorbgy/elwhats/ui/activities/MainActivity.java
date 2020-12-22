@@ -37,6 +37,7 @@ import com.shorbgy.elwhats.pojo.User;
 import com.shorbgy.elwhats.utils.GlideUtils;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -115,6 +116,26 @@ public class MainActivity extends AppCompatActivity {
         tabLayoutMediator.attach();
     }
 
+    private void updateStatus(String status){
+
+        HashMap<String, Object> statusMap = new HashMap<>();
+        statusMap.put("status", status);
+
+        reference.updateChildren(statusMap);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateStatus("online");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        updateStatus("offline");
+    }
+
     private void setupUserData(){
         reference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -151,7 +172,8 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.sign_out_menu){
             FirebaseAuth.getInstance().signOut();
-            startActivity(new Intent(MainActivity.this, StartActivity.class));
+            startActivity(new Intent(MainActivity.this, StartActivity.class)
+                    .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
             finish();
         }
         return true;

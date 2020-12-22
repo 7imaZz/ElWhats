@@ -31,6 +31,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         CircleImageView profilePic;
         @BindView(R.id.user_username_tv)
         TextView usernameTextView;
+        @BindView(R.id.status_img)
+        CircleImageView statusImageView;
 
         public UserViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -76,6 +78,12 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
             intent.putExtra("friend", users.get(position));
             context.startActivity(intent);
         });
+
+        if (users.get(position).getStatus().equals("online")){
+            holder.statusImageView.setImageResource(R.drawable.online_bg);
+        }else {
+            holder.statusImageView.setImageResource(R.drawable.offline_bg);
+        }
     }
 
     @Override
