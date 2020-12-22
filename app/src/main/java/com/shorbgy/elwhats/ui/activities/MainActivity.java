@@ -34,6 +34,8 @@ import com.google.firebase.storage.StorageReference;
 import com.shorbgy.elwhats.R;
 import com.shorbgy.elwhats.adapters.MyFragmentStateAdapter;
 import com.shorbgy.elwhats.pojo.User;
+import com.shorbgy.elwhats.utils.GlideUtils;
+
 import java.io.File;
 import java.util.Objects;
 import java.util.UUID;
@@ -124,10 +126,17 @@ public class MainActivity extends AppCompatActivity {
                 if (user.getImageUrl().equals("Default")){
                     profileImage.setImageResource(R.mipmap.ic_person);
                 }else {
-                    Glide.with(MainActivity.this)
-                            .load(user.getImageUrl())
-                            .centerCrop()
-                            .into(profileImage);
+                    if (GlideUtils.isValidContextForGlide(MainActivity.this)){
+                        Glide.with(MainActivity.this)
+                                .load(user.getImageUrl())
+                                .centerCrop()
+                                .into(profileImage);
+                    }else {
+                        Glide.with(getApplicationContext())
+                                .load(user.getImageUrl())
+                                .centerCrop()
+                                .into(profileImage);
+                    }
                 }
             }
 

@@ -1,6 +1,7 @@
 package com.shorbgy.elwhats.ui.fragments;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -21,6 +22,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.shorbgy.elwhats.R;
 import com.shorbgy.elwhats.pojo.User;
+import com.shorbgy.elwhats.utils.GlideUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,6 +33,7 @@ public class ProfileFragment extends Fragment {
 
     private static final String TAG = "ProfileFragment";
 
+    private Context appContext;
 
     @BindView(R.id.pro_profile_img)
     CircleImageView profilePic;
@@ -77,9 +80,11 @@ public class ProfileFragment extends Fragment {
                 assert user != null;
                 usernameTextView.setText(user.getUsername());
                 if (!user.getImageUrl().equals("Default")){
-                    Glide.with(requireContext())
-                            .load(user.getImageUrl())
-                            .into(profilePic);
+                    if (GlideUtils.isValidContextForGlide(appContext)) {
+                        Glide.with(appContext)
+                                .load(user.getImageUrl())
+                                .into(profilePic);
+                    }
                 }
             }
 
@@ -88,5 +93,12 @@ public class ProfileFragment extends Fragment {
 
             }
         });
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (appContext == null)
+            appContext = context.getApplicationContext();
     }
 }
