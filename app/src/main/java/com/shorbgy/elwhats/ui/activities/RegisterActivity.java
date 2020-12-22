@@ -75,10 +75,11 @@ public class RegisterActivity extends AppCompatActivity {
 
                 database = FirebaseDatabase.getInstance().getReference("Users").child(userId);
 
-                HashMap<String, String> userMap = new HashMap<>();
+                HashMap<String, Object> userMap = new HashMap<>();
                 userMap.put("id", userId);
                 userMap.put("username", username);
                 userMap.put("imageUrl", "Default");
+                userMap.put("date", 0);
 
                 database.setValue(userMap).addOnCompleteListener(task1 -> {
                     if (task1.isSuccessful()){

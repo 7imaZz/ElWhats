@@ -8,20 +8,23 @@ public class User implements Parcelable{
     private String id;
     private String imageUrl;
     private String username;
+    private long date;
 
     public User() {
     }
 
-    public User(String id, String imageUrl, String username) {
+    public User(String id, String imageUrl, String username, long date) {
         this.id = id;
         this.imageUrl = imageUrl;
         this.username = username;
+        this.date = date;
     }
 
     protected User(Parcel in) {
         id = in.readString();
         imageUrl = in.readString();
         username = in.readString();
+        date = in.readLong();
     }
 
     public static final Creator<User> CREATOR = new Creator<User>() {
@@ -60,6 +63,14 @@ public class User implements Parcelable{
         this.username = username;
     }
 
+    public long getDate() {
+        return date;
+    }
+
+    public void setDate(long date) {
+        this.date = date;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -70,5 +81,6 @@ public class User implements Parcelable{
         dest.writeString(id);
         dest.writeString(imageUrl);
         dest.writeString(username);
+        dest.writeLong(date);
     }
 }

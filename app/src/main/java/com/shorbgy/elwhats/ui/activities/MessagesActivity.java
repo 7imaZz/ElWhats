@@ -23,8 +23,12 @@ import com.shorbgy.elwhats.adapters.MessagesAdapter;
 import com.shorbgy.elwhats.pojo.Chat;
 import com.shorbgy.elwhats.pojo.User;
 
+import java.sql.Time;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -131,5 +135,13 @@ public class MessagesActivity extends AppCompatActivity {
         messageMap.put("message", message);
 
         reference.child("Chat").push().setValue(messageMap);
+
+        Date currentDate = new Date();
+        long currentTime = currentDate.getTime();
+
+        reference.child("Users").child(friend.getId())
+                .child("date").setValue(currentTime);
+        reference.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .child("date").setValue(currentTime);
     }
 }
