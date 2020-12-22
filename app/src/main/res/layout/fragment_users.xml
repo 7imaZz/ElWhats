@@ -6,11 +6,27 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.fragments.UsersFragment">
 
+    <androidx.cardview.widget.CardView
+        android:id="@+id/search_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="8dp"
+        android:layout_margin="@dimen/_4sdp"
+        app:cardElevation="@dimen/_4sdp">
+
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/search_sv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:queryHint="Search"/>
+    </androidx.cardview.widget.CardView>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/users_rv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:listitem="@layout/user_item"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:layout_below="@id/search_card"/>
 
 </RelativeLayout>

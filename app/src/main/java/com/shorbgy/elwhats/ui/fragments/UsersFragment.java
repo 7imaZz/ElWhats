@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -39,6 +40,8 @@ public class UsersFragment extends Fragment {
 
     @BindView(R.id.users_rv)
     RecyclerView usersRecyclerView;
+    @BindView(R.id.search_sv)
+    SearchView searchView;
 
     private UserAdapter adapter;
     ArrayList<User> users = new ArrayList<>();
@@ -63,6 +66,8 @@ public class UsersFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
 
+        expandSearchView();
+
         usersRecyclerView.setHasFixedSize(true);
         usersRecyclerView.setItemAnimator(new DefaultItemAnimator());
         usersRecyclerView.addItemDecoration(new DividerItemDecoration(requireContext(),
@@ -70,6 +75,7 @@ public class UsersFragment extends Fragment {
         usersRecyclerView.setAdapter(adapter);
 
         readUsers();
+        filterUsers();
     }
 
     private void readUsers(){
@@ -85,7 +91,9 @@ public class UsersFragment extends Fragment {
                 for (DataSnapshot dataSnapshot: snapshot.getChildren()){
                     User user = dataSnapshot.getValue(User.class);
 
+                    assert user != null;
                     Log.d(TAG, "onDataChange: "+user.getUsername());
+                    assert firebaseUser != null;
                     if (!user.getId().equals(firebaseUser.getUid())){
                         users.add(user);
                         Log.d(TAG, "onDataChange: "+user.getId());
@@ -102,6 +110,35 @@ public class UsersFragment extends Fragment {
             }
         });
 
+    }
 
+    private void filterUsers(){
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                ArrayList<User> filteredUsers = new ArrayList<>();
+
+                if (!users.isEmpty()) {
+                    for (User user : users) {
+                        if (user.getUsername().toLowerCase().contains(newText.toLowerCase())) {
+                            filteredUsers.add(user);
+                        }
+                    }
+                    adapter.setUsers(filteredUsers);
+                    adapter.notifyDataSetChanged();
+                }
+                return true;
+            }
+        });
+    }
+
+    private void expandSearchView(){
+        searchView.setOnClickListener(v -> searchView.setIconified(false));
     }
 }
