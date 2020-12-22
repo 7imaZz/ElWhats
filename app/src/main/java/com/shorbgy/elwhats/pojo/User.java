@@ -1,6 +1,9 @@
 package com.shorbgy.elwhats.pojo;
 
-public class User {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class User implements Parcelable{
 
     private String id;
     private String imageUrl;
@@ -14,6 +17,24 @@ public class User {
         this.imageUrl = imageUrl;
         this.username = username;
     }
+
+    protected User(Parcel in) {
+        id = in.readString();
+        imageUrl = in.readString();
+        username = in.readString();
+    }
+
+    public static final Creator<User> CREATOR = new Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel in) {
+            return new User(in);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
 
     public String getId() {
         return id;
@@ -37,5 +58,17 @@ public class User {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(imageUrl);
+        dest.writeString(username);
     }
 }

@@ -2,6 +2,7 @@ package com.shorbgy.elwhats.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.shorbgy.elwhats.R;
 import com.shorbgy.elwhats.pojo.User;
+import com.shorbgy.elwhats.ui.activities.MessagesActivity;
 
 import java.util.ArrayList;
 
@@ -68,6 +70,12 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
                     .placeholder(R.drawable.ic_person)
                     .into(holder.profilePic);
         }
+
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, MessagesActivity.class);
+            intent.putExtra("friend", users.get(position));
+            context.startActivity(intent);
+        });
     }
 
     @Override

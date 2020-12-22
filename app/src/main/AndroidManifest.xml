@@ -9,8 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ElWhats">
-        <activity android:name=".ui.activities.LoginActivity"
-            android:parentActivityName=".ui.activities.StartActivity"/>
+        <activity android:name=".ui.activities.MessagesActivity" />
+        <activity
+            android:name=".ui.activities.LoginActivity"
+            android:parentActivityName=".ui.activities.StartActivity" />
         <activity android:name=".ui.activities.MainActivity" />
         <activity
             android:name=".ui.activities.RegisterActivity"
