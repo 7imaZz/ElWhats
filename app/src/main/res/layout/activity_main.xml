@@ -23,7 +23,7 @@
                 android:id="@+id/profile_img"
                 android:layout_width="@dimen/_24sdp"
                 android:layout_height="@dimen/_24sdp"
-                android:src="@drawable/ic_person"/>
+                android:src="@mipmap/ic_person"/>
 
             <TextView
                 android:id="@+id/username_tv"

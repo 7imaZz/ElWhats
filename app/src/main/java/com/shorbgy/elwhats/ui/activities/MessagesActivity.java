@@ -23,12 +23,10 @@ import com.shorbgy.elwhats.adapters.MessagesAdapter;
 import com.shorbgy.elwhats.pojo.Chat;
 import com.shorbgy.elwhats.pojo.User;
 
-import java.sql.Time;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -81,7 +79,7 @@ public class MessagesActivity extends AppCompatActivity {
 
     private void initializeUi(){
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("");
+        Objects.requireNonNull(getSupportActionBar()).setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationOnClickListener(v -> finish());
 
@@ -102,7 +100,8 @@ public class MessagesActivity extends AppCompatActivity {
                 for (DataSnapshot dataSnapshot: snapshot.getChildren()){
                     Chat chat = dataSnapshot.getValue(Chat.class);
 
-                    if ((chat.getSender().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                    assert chat != null;
+                    if ((chat.getSender().equals(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())
                             && chat.getReceiver().equals(friend.getId()))
                             || (chat.getReceiver().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())
                             && chat.getSender().equals(friend.getId()))){
@@ -141,7 +140,7 @@ public class MessagesActivity extends AppCompatActivity {
 
         reference.child("Users").child(friend.getId())
                 .child("date").setValue(currentTime);
-        reference.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+        reference.child("Users").child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())
                 .child("date").setValue(currentTime);
     }
 }

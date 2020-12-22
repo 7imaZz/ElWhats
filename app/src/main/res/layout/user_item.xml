@@ -6,13 +6,14 @@
     android:orientation="horizontal"
     android:background="?android:attr/selectableItemBackground"
     android:clickable="true"
-    android:focusable="true">
+    android:focusable="true"
+    android:padding="@dimen/_6sdp">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/user_profile_img"
         android:layout_width="@dimen/_40sdp"
         android:layout_height="@dimen/_40sdp"
-        android:src="@drawable/ic_person"/>
+        android:src="@mipmap/ic_person"/>
 
     <TextView
         android:id="@+id/user_username_tv"

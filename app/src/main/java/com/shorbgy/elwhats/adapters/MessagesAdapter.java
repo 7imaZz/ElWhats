@@ -16,6 +16,7 @@ import com.shorbgy.elwhats.R;
 import com.shorbgy.elwhats.pojo.Chat;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -74,7 +75,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
         holder.messageTextView.setText(chats.get(position).getMessage());
 
         if (imageUrl.equals("Default")){
-            holder.profilePic.setImageResource(R.drawable.ic_person);
+            holder.profilePic.setImageResource(R.mipmap.ic_person);
         }else {
             Glide.with(context)
                     .load(imageUrl)
@@ -89,7 +90,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
 
     @Override
     public int getItemViewType(int position) {
-        if (FirebaseAuth.getInstance().getCurrentUser().getUid().equals(chats.get(position).getSender())){
+        if (Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid().equals(chats.get(position).getSender())){
             return SENDER;
         }else {
             return RECEIVER;

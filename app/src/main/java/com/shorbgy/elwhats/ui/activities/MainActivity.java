@@ -1,18 +1,25 @@
 package com.shorbgy.elwhats.ui.activities;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.auth.FirebaseAuth;
@@ -22,9 +29,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.shorbgy.elwhats.R;
 import com.shorbgy.elwhats.adapters.MyFragmentStateAdapter;
 import com.shorbgy.elwhats.pojo.User;
+import java.io.File;
+import java.util.Objects;
+import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -55,15 +67,39 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("");
+        Objects.requireNonNull(getSupportActionBar()).setTitle("");
 
 
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        assert currentUser != null;
         reference = FirebaseDatabase.getInstance().getReference("Users").child(currentUser.getUid());
 
         initializeTabLayout();
 
         setupUserData();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == Activity.RESULT_OK) {
+            //Image Uri will not be null for RESULT_OK
+            assert data != null;
+            Uri fileUri = data.getData();
+            profileImage.setImageURI(fileUri);
+            //You can get File object from intent
+            File file = ImagePicker.Companion.getFile(data);
+
+            uploadFile(fileUri);
+            assert file != null;
+            Log.d("TAG", "onActivityResult: "+file.toString());
+
+        } else if (resultCode == ImagePicker.RESULT_ERROR) {
+            Toast.makeText(this, ImagePicker.Companion.getError(data), Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Task Cancelled", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void initializeTabLayout(){
@@ -82,10 +118,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User user = snapshot.getValue(User.class);
+                assert user != null;
                 usernameTextView.setText(user.getUsername());
 
                 if (user.getImageUrl().equals("Default")){
-                    profileImage.setImageResource(R.drawable.ic_person);
+                    profileImage.setImageResource(R.mipmap.ic_person);
                 }else {
                     Glide.with(MainActivity.this)
                             .load(user.getImageUrl())
@@ -115,5 +152,33 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
         return true;
+    }
+
+
+    private void uploadFile(Uri filePath) {
+
+        // Code for showing progressDialog while uploading
+        ProgressDialog progressDialog
+                = new ProgressDialog(this);
+        progressDialog.setTitle("Uploading...");
+        progressDialog.show();
+
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+        // Defining the child of storageReference
+        StorageReference ref = storageReference.child("images/" + UUID.randomUUID().toString());
+
+        ref.putFile(filePath).addOnSuccessListener(taskSnapshot -> {
+            progressDialog.dismiss();
+            Toast.makeText(MainActivity.this, "Image Uploaded!!", Toast.LENGTH_SHORT).show();
+            ref.getDownloadUrl().addOnCompleteListener(task -> {
+                Log.d("TAG", "onComplete: "+task.getResult());
+                reference.child("imageUrl").setValue(Objects.requireNonNull(task.getResult()).toString());
+            });
+
+        }).addOnFailureListener(e -> {
+                // Error, Image not uploaded
+                progressDialog.dismiss();
+                Log.d("TAG", "onFailure: "+e.getMessage());
+            });
     }
 }

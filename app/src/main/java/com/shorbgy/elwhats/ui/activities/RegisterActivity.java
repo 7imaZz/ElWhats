@@ -3,6 +3,7 @@ package com.shorbgy.elwhats.ui.activities;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -67,6 +68,11 @@ public class RegisterActivity extends AppCompatActivity {
 
     public void registerWithEmailAndPassword(String username, String email, String password){
 
+        ProgressDialog progressDialog
+                = new ProgressDialog(this);
+        progressDialog.setTitle("Please Wait...");
+        progressDialog.show();
+
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             if (task.isSuccessful()){
                 FirebaseUser firebaseUser = auth.getCurrentUser();
@@ -82,15 +88,17 @@ public class RegisterActivity extends AppCompatActivity {
                 userMap.put("date", 0);
 
                 database.setValue(userMap).addOnCompleteListener(task1 -> {
-                    if (task1.isSuccessful()){
+                    if(task1.isSuccessful()){
                         Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
+                        progressDialog.dismiss();
                     }
                 });
             }else {
                 Toast.makeText(this, "Cannot Login With This Email An Password",
                         Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
             }
         });
     }

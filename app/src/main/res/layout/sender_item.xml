@@ -10,7 +10,7 @@
         android:id="@+id/message_img"
         android:layout_width="@dimen/_40sdp"
         android:layout_height="@dimen/_40sdp"
-        android:src="@drawable/ic_person"
+        android:src="@mipmap/ic_person"
         android:layout_alignParentEnd="true"
         android:visibility="gone"/>
 

@@ -11,6 +11,7 @@
     <string name="login_to_elwhatsapp">Login To ElWhatsApp</string>
     <string name="login">Login</string>
     <string name="sign_out">Sign Out</string>
-    <string name="type_a_message">Type A Message...</string>
+    <string name="type_a_message">Type A Message…</string>
     <string name="send_button">Send Button</string>
+    <string name="profile">Profile</string>
 </resources>
