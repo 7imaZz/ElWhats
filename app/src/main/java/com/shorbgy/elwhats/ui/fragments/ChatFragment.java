@@ -22,11 +22,15 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.shorbgy.elwhats.R;
 import com.shorbgy.elwhats.adapters.UserAdapter;
 import com.shorbgy.elwhats.pojo.Chat;
+import com.shorbgy.elwhats.pojo.Token;
 import com.shorbgy.elwhats.pojo.User;
 import java.util.ArrayList;
+import java.util.Objects;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -70,6 +74,8 @@ public class ChatFragment extends Fragment {
         usersRecyclerView.setAdapter(adapter);
 
         findChattedUsers();
+
+        updateToken(FirebaseInstanceId.getInstance().getToken());
     }
 
     public void findChattedUsers(){
@@ -137,7 +143,13 @@ public class ChatFragment extends Fragment {
 
             }
         });
+    }
 
+    private void updateToken(String token){
 
+        DatabaseReference tokenReference = FirebaseDatabase.getInstance().getReference("Tokens");
+        Token token1 = new Token(token);
+        tokenReference.child(Objects.requireNonNull(
+                FirebaseAuth.getInstance().getCurrentUser()).getUid()).setValue(token1);
     }
 }
