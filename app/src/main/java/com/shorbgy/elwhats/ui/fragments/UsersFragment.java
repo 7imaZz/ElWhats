@@ -56,7 +56,7 @@ public class UsersFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        adapter = new UserAdapter(requireContext(), users);
+        adapter = new UserAdapter(requireContext(), users, false);
 
         return inflater.inflate(R.layout.fragment_users, container, false);
     }

@@ -12,11 +12,20 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.shorbgy.elwhats.R;
+import com.shorbgy.elwhats.pojo.Chat;
 import com.shorbgy.elwhats.pojo.User;
 import com.shorbgy.elwhats.ui.activities.MessagesActivity;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,6 +40,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         CircleImageView profilePic;
         @BindView(R.id.user_username_tv)
         TextView usernameTextView;
+        @BindView(R.id.user_last_message_tv)
+        TextView lastMessageTextView;
         @BindView(R.id.status_img)
         CircleImageView statusImageView;
 
@@ -40,12 +51,16 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         }
     }
 
+    private String lastMessage = "";
+
     private final Context context;
     private ArrayList<User> users;
+    private boolean isChat;
 
-    public UserAdapter(Context context, ArrayList<User> users) {
+    public UserAdapter(Context context, ArrayList<User> users, boolean isChat) {
         this.context = context;
         this.users = users;
+        this.isChat = isChat;
     }
 
     public void setUsers(ArrayList<User> users) {
@@ -63,6 +78,10 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
     public void onBindViewHolder(@NonNull UserAdapter.UserViewHolder holder, int position) {
 
         holder.usernameTextView.setText(users.get(position).getUsername());
+
+        if (isChat) {
+            getLastMessage(holder.lastMessageTextView, users.get(position).getId());
+        }
 
         if (users.get(position).getImageUrl().equals("Default")){
             holder.profilePic.setImageResource(R.mipmap.ic_person);
@@ -89,5 +108,34 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
     @Override
     public int getItemCount() {
         return users.size();
+    }
+
+    private void getLastMessage(TextView textView, String friendId){
+
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Chat");
+
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot: snapshot.getChildren()){
+                    Chat chat = dataSnapshot.getValue(Chat.class);
+
+                    assert chat != null;
+                    assert currentUser != null;
+                    if ((chat.getSender().equals(currentUser.getUid()) && chat.getReceiver().equals(friendId))
+                            || (chat.getReceiver().equals(currentUser.getUid()) && chat.getSender().equals(friendId))){
+                        lastMessage = chat.getMessage();
+                    }
+                }
+
+                textView.setText(lastMessage);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 }

@@ -26,11 +26,7 @@ import com.shorbgy.elwhats.R;
 import com.shorbgy.elwhats.adapters.UserAdapter;
 import com.shorbgy.elwhats.pojo.Chat;
 import com.shorbgy.elwhats.pojo.User;
-
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -56,7 +52,7 @@ public class ChatFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        adapter = new UserAdapter(requireContext(), users);
+        adapter = new UserAdapter(requireContext(), users, true);
 
         return inflater.inflate(R.layout.fragment_chat, container, false);
     }
@@ -87,6 +83,7 @@ public class ChatFragment extends Fragment {
 
                 for (DataSnapshot dataSnapshot: snapshot.getChildren()){
                     Chat chat = dataSnapshot.getValue(Chat.class);
+                    assert chat != null && firebaseUser!=null;
                     if (chat.getSender().equals(firebaseUser.getUid())){
                         if (!chattedUsers.contains(chat.getReceiver())) {
                             Log.d(TAG, "Chatted: "+chat.getReceiver());
@@ -125,19 +122,12 @@ public class ChatFragment extends Fragment {
                 for (DataSnapshot dataSnapshot: snapshot.getChildren()){
                     User user = dataSnapshot.getValue(User.class);
 
+                    assert user != null;
                     if (chattedUsers.contains(user.getId())){
                         users.add(user);
                     }
                 }
 
-                Collections.sort(users, new Comparator<User>() {
-                    @Override
-                    public int compare(User o1, User o2) {
-                        if(o1.getDate() == o2.getDate())
-                            return 0;
-                        return o1.getDate() > o2.getDate() ? -1 : 1;
-                    }
-                });
                 adapter.setUsers(users);
                 adapter.notifyDataSetChanged();
             }

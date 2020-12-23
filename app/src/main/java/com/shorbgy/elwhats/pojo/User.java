@@ -9,16 +9,14 @@ public class User implements Parcelable{
     private String imageUrl;
     private String username;
     private String status;
-    private long date;
 
     public User() {
     }
 
-    public User(String id, String imageUrl, String username, String status,long date) {
+    public User(String id, String imageUrl, String username, String status) {
         this.id = id;
         this.imageUrl = imageUrl;
         this.username = username;
-        this.date = date;
         this.status = status;
     }
 
@@ -27,7 +25,6 @@ public class User implements Parcelable{
         imageUrl = in.readString();
         username = in.readString();
         status = in.readString();
-        date = in.readLong();
     }
 
     public static final Creator<User> CREATOR = new Creator<User>() {
@@ -66,14 +63,6 @@ public class User implements Parcelable{
         this.username = username;
     }
 
-    public long getDate() {
-        return date;
-    }
-
-    public void setDate(long date) {
-        this.date = date;
-    }
-
     public String getStatus() {
         return status;
     }
@@ -93,6 +82,5 @@ public class User implements Parcelable{
         dest.writeString(imageUrl);
         dest.writeString(username);
         dest.writeString(status);
-        dest.writeLong(date);
     }
 }

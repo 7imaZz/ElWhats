@@ -82,7 +82,6 @@ public class LoginActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         builder.setTitle("Forgot Password?");
-        builder.setMessage("Enter Your Email");
 
         EditText editText = new EditText(this);
         editText.setHint("Email Address");
@@ -100,15 +99,14 @@ public class LoginActivity extends AppCompatActivity {
                 progressDialog.show();
 
                 auth.sendPasswordResetEmail(editText.getText().toString()).addOnCompleteListener(task -> {
-                    if (task.isSuccessful()){
+                    if(task.isSuccessful()){
                         Toast.makeText(LoginActivity.this,
                                 "Please Check Your Email Address", Toast.LENGTH_LONG).show();
-                        progressDialog.dismiss();
                     }else {
                         Toast.makeText(LoginActivity.this,
                                 "Failed", Toast.LENGTH_LONG).show();
-                        progressDialog.dismiss();
                     }
+                    progressDialog.dismiss();
                 });
             }
         });

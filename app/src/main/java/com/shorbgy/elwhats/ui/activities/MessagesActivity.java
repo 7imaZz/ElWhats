@@ -5,7 +5,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.EditText;
@@ -26,7 +25,6 @@ import com.shorbgy.elwhats.pojo.Chat;
 import com.shorbgy.elwhats.pojo.User;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -137,13 +135,6 @@ public class MessagesActivity extends AppCompatActivity {
 
         reference.child("Chat").push().setValue(messageMap);
 
-        Date currentDate = new Date();
-        long currentTime = currentDate.getTime();
-
-        reference.child("Users").child(friend.getId())
-                .child("date").setValue(currentTime);
-        reference.child("Users").child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())
-                .child("date").setValue(currentTime);
     }
 
     private void updateStatus(String status){
