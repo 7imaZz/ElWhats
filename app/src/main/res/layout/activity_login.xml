@@ -52,6 +52,19 @@
             android:text="@string/login"
             android:textColor="@android:color/white"/>
 
+        <TextView
+            android:id="@+id/forgot_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/forgot_your_password"
+            android:layout_gravity="end"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="18sp"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?android:attr/selectableItemBackground"/>
+
     </LinearLayout>
 
 </RelativeLayout>

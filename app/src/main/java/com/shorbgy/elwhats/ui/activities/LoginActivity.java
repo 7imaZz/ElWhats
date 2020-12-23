@@ -3,11 +3,14 @@ package com.shorbgy.elwhats.ui.activities;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.rengwuxian.materialedittext.MaterialEditText;
@@ -28,6 +31,8 @@ public class LoginActivity extends AppCompatActivity {
     Button loginButton;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    @BindView(R.id.forgot_tv)
+    TextView forgotTextView;
 
     private FirebaseAuth auth;
 
@@ -52,6 +57,8 @@ public class LoginActivity extends AppCompatActivity {
                 login(email, password);
             }
         });
+
+        forgotTextView.setOnClickListener(v -> setupForgotAlert());
     }
 
     public void login(String email, String password){
@@ -69,6 +76,46 @@ public class LoginActivity extends AppCompatActivity {
             }
             progressDialog.dismiss();
         });
+    }
+
+    public void setupForgotAlert(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle("Forgot Password?");
+        builder.setMessage("Enter Your Email");
+
+        EditText editText = new EditText(this);
+        editText.setHint("Email Address");
+
+        builder.setView(editText);
+        builder.setPositiveButton("Confirm", (dialog, which) -> {
+            if (editText.getText().toString().isEmpty()){
+                Toast.makeText(LoginActivity.this,
+                        "Please Enter Your Email Address", Toast.LENGTH_LONG).show();
+            }else{
+
+                ProgressDialog progressDialog
+                        = new ProgressDialog(LoginActivity.this);
+                progressDialog.setTitle("Please Wait...");
+                progressDialog.show();
+
+                auth.sendPasswordResetEmail(editText.getText().toString()).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()){
+                        Toast.makeText(LoginActivity.this,
+                                "Please Check Your Email Address", Toast.LENGTH_LONG).show();
+                        progressDialog.dismiss();
+                    }else {
+                        Toast.makeText(LoginActivity.this,
+                                "Failed", Toast.LENGTH_LONG).show();
+                        progressDialog.dismiss();
+                    }
+                });
+            }
+        });
+
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+
+        builder.create().show();
     }
 
 

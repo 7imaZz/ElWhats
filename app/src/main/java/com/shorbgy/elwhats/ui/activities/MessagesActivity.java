@@ -83,9 +83,7 @@ public class MessagesActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setNavigationOnClickListener(v ->
-                startActivity(new Intent(MessagesActivity.this, MainActivity.class)
-                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)));
+        toolbar.setNavigationOnClickListener(v -> finish());
 
         friendNameTextView.setText(friend.getUsername());
         if (!friend.getImageUrl().equals("Default")){
