@@ -1,15 +1,12 @@
 package com.shorbgy.elwhats.notification;
 
-import android.annotation.SuppressLint;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
-import android.media.RingtoneManager;
-import android.net.Uri;
-
+import android.content.SharedPreferences;
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -24,13 +21,20 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService{
         super.onMessageReceived(remoteMessage);
 
         String sent = remoteMessage.getData().get("sent");
+        String user = remoteMessage.getData().get("user");
+
+        SharedPreferences sharedPreferences = getSharedPreferences("prefs", Context.MODE_PRIVATE);
+        String currentUserId = sharedPreferences.getString("current_user", "none");
+
 
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
         if (currentUser != null) {
             assert sent != null;
             if (sent.equals(currentUser.getUid())) {
-                sendNotification(remoteMessage);
+                if (!currentUserId.equals(user)) {
+                    sendNotification(remoteMessage);
+                }
             }
         }
     }
@@ -47,8 +51,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService{
         String title = remoteMessage.getData().get("title");
         String body = remoteMessage.getData().get("body");
 
-        RemoteMessage.Notification notification = remoteMessage.getNotification();
-
         assert user != null;
         int j = Integer.parseInt(user.replaceAll("[\\D]", ""));
 
@@ -56,15 +58,20 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService{
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, j, intent, PendingIntent.FLAG_ONE_SHOT);
 
-        Uri defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        /*Uri defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        Uri alarmSound = Uri.parse("android.resource://"+this.getPackageName() + "/" + R.raw.siren);*/
+
+        long[] vibrate = { 0, 100, 200, 300 };
+
         assert icon != null;
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_1_ID)
                 .setSmallIcon(Integer.parseInt(icon))
                 .setContentTitle(title)
                 .setContentText(body)
                 .setAutoCancel(true)
-                .setSound(defaultSound)
-                .setContentIntent(pendingIntent);
+                .setDefaults(NotificationCompat.DEFAULT_SOUND)
+                .setContentIntent(pendingIntent)
+                .setVibrate(vibrate);
 
         int i = 0;
         if (j>0){

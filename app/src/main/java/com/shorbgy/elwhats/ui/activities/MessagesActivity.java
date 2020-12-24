@@ -5,6 +5,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.EditText;
@@ -227,15 +229,23 @@ public class MessagesActivity extends AppCompatActivity {
         reference.updateChildren(statusMap);
     }
 
+    private void saveCurrentUser(String userId){
+        SharedPreferences.Editor editor = getSharedPreferences("prefs", Context.MODE_PRIVATE).edit();
+        editor.putString("current_user", userId);
+        editor.apply();
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
         updateStatus("online");
+        saveCurrentUser(friend.getId());
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         updateStatus("offline");
+        saveCurrentUser("none");
     }
 }
