@@ -33,6 +33,7 @@ import com.shorbgy.elwhats.pojo.MyResponse;
 import com.shorbgy.elwhats.pojo.Sender;
 import com.shorbgy.elwhats.pojo.Token;
 import com.shorbgy.elwhats.pojo.User;
+import com.shorbgy.elwhats.utils.ImageDialog;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -107,6 +108,9 @@ public class MessagesActivity extends AppCompatActivity {
             Glide.with(this)
                     .load(friend.getImageUrl())
                     .into(profilePic);
+
+            profilePic.setOnClickListener(v ->
+                    ImageDialog.popupImageDialog(MessagesActivity.this, friend.getImageUrl()));
         }
     }
 
@@ -185,7 +189,7 @@ public class MessagesActivity extends AppCompatActivity {
                 for (DataSnapshot dataSnapshot: snapshot.getChildren()){
                     Token token = dataSnapshot.getValue(Token.class);
                     Data data = new Data(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid(),
-                            username+": "+message, "New Message", friend.getId(), R.mipmap.ic_person);
+                            username+": "+message, "New Message", friend.getId(), R.mipmap.logo);
                     assert token != null;
                     Sender sender = new Sender(data, token.getToken());
                     notificationApi.sendNotification(sender).enqueue(new Callback<MyResponse>() {

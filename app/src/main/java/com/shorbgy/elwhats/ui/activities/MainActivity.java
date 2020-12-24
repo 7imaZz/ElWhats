@@ -35,6 +35,7 @@ import com.shorbgy.elwhats.R;
 import com.shorbgy.elwhats.adapters.MyFragmentStateAdapter;
 import com.shorbgy.elwhats.pojo.User;
 import com.shorbgy.elwhats.utils.GlideUtils;
+import com.shorbgy.elwhats.utils.ImageDialog;
 
 import java.io.File;
 import java.util.HashMap;
@@ -159,6 +160,9 @@ public class MainActivity extends AppCompatActivity {
                                 .into(profileImage);
                     }
                 }
+
+                profileImage.setOnClickListener(v ->
+                        ImageDialog.popupImageDialog(MainActivity.this, user.getImageUrl()));
             }
 
             @Override

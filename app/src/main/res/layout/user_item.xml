@@ -11,9 +11,9 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/user_profile_img"
-        android:layout_width="@dimen/_40sdp"
-        android:layout_height="@dimen/_40sdp"
-        android:src="@mipmap/ic_person"/>
+        android:layout_width="@dimen/_45sdp"
+        android:layout_height="@dimen/_45sdp"
+        android:src="@mipmap/ic_person" />
 
 
     <LinearLayout

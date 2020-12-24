@@ -23,9 +23,9 @@ import com.shorbgy.elwhats.R;
 import com.shorbgy.elwhats.pojo.Chat;
 import com.shorbgy.elwhats.pojo.User;
 import com.shorbgy.elwhats.ui.activities.MessagesActivity;
+import com.shorbgy.elwhats.utils.ImageDialog;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -55,7 +55,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
 
     private final Context context;
     private ArrayList<User> users;
-    private boolean isChat;
+    private final boolean isChat;
 
     public UserAdapter(Context context, ArrayList<User> users, boolean isChat) {
         this.context = context;
@@ -97,6 +97,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
             intent.putExtra("friend", users.get(position));
             context.startActivity(intent);
         });
+
+        holder.profilePic.setOnClickListener(v ->
+                ImageDialog.popupImageDialog(context, users.get(position).getImageUrl()));
 
         if (users.get(position).getStatus().equals("online")){
             holder.statusImageView.setImageResource(R.drawable.online_bg);
